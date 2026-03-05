@@ -12,7 +12,7 @@ def lifecycle(_: FastAPI):
     """
     FastAPI application lifecycle.
 
-    :param app: FastAPI instance
+    :param _: FastAPI instance
     """
     # configure logging
     logging.config.dictConfig(settings.LOGGING)

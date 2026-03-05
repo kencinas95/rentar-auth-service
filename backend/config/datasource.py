@@ -1,11 +1,15 @@
+import logging
 from contextlib import contextmanager
 
 import mongodb_odm as odm
 import pymongo
+from pymongo.errors import OperationFailure
 
 from backend.config import settings
 
 __datasource__: pymongo.MongoClient | None = None
+
+log = logging.getLogger("backend.congfig.datasource")
 
 
 def init():
@@ -15,8 +19,14 @@ def init():
     global __datasource__
 
     if not __datasource__:
-        __datasource__ = odm.connect(settings.MDB_CONNECTION_URL, databases={settings.MDB_DATABASE_NAME})
-        odm.apply_indexes()
+        # TODO: improve the connection pool / client - add timeouts, pool size, etc. It needs work.
+        try:
+            __datasource__ = odm.connect(settings.MDB_CONNECTION_URL, databases={settings.MDB_DATABASE_NAME})
+            odm.apply_indexes()
+        except OperationFailure as ex:
+            log.exception("MongoDB connection failed, aborting app startup.")
+            raise SystemExit() from ex
+
 
 
 def close():

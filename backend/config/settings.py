@@ -1,5 +1,4 @@
 import os
-import urllib.parse as up
 from datetime import timedelta
 from pathlib import Path
 
@@ -19,7 +18,7 @@ MDB_DATABASE_NAME = os.environ["MDB_DATABASE_NAME"]
 MDB_HOSTNAME = os.environ["MDB_HOSTNAME"]
 MDB_PORT = int(os.environ["MDB_PORT"])
 MDB_CONNECTION_URL = os.environ.get("MDB_CONNECTION_URL")
-#if not MDB_CONNECTION_URL:
+# if not MDB_CONNECTION_URL:
 #    MDB_CONNECTION_URL = (f"mongodb://{MDB_USERNAME}:{up.quote(MDB_PASSWORD, safe='')}"
 #                          f"@{MDB_HOSTNAME}:{MDB_PORT}/{MDB_DATABASE_NAME}"
 #                          "?authSource=admin")
@@ -65,29 +64,10 @@ LOGGING = {"version": 1, "disable_existing_loggers": False, "formatters": {"defa
            'root': {'level': 'INFO', 'handlers': ['console'], 'propagate': False}}
 
 # --- oidc settings ---
-OIDC_REGISTRY = [
-    {
-        "name": "rentar",
-        "return_to": os.environ["REMOTE_APP_RENTAR_BASE_URL"] + "/auth/callback",
-        "providers": [
-            {
-                "name": "google",
-                "client_id": os.environ["OIDC_REGISTRY_RENTAR_CLIENT_ID"],
-                "client_secret": os.environ["OIDC_REGISTRY_RENTAR_CLIENT_SECRET"],
-                "server_metadata_url": "https://accounts.google.com/.well-known/openid-configuration",
-                "client_kwargs": {
-                    "scope": "openid profile email"
-                }
-            },
-            {
-                "name": "linkedin",
-                "client_id": "",
-                "client_secret": "",
-                "server_metadata_url": "https://www.linkedin.com/oauth/.well-known/openid-configuration",
-                "client_kwargs": {
-                    "scope": "openid profile email"
-                }
-            }
-        ]
-    }
-]
+OIDC_REGISTRY = [{"name": "rentar", "return_to": os.environ["REMOTE_APP_RENTAR_BASE_URL"] + "/auth/callback",
+    "providers": [{"name": "google", "client_id": os.environ["OIDC_REGISTRY_RENTAR_CLIENT_ID"],
+        "client_secret": os.environ["OIDC_REGISTRY_RENTAR_CLIENT_SECRET"],
+        "server_metadata_url": "https://accounts.google.com/.well-known/openid-configuration",
+        "client_kwargs": {"scope": "openid profile email"}}, {"name": "linkedin", "client_id": "", "client_secret": "",
+        "server_metadata_url": "https://www.linkedin.com/oauth/.well-known/openid-configuration",
+        "client_kwargs": {"scope": "openid profile email"}}]}]
