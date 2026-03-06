@@ -1,8 +1,0 @@
-name: "auth-source-rentar"
-
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    
